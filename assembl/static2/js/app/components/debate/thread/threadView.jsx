@@ -25,7 +25,8 @@ type Props = {
   phaseId: string,
   timeline: Timeline,
   messageViewOverride: string,
-  postsDisplayPolicy?: PostsDisplayPolicy
+  postsDisplayPolicy?: PostsDisplayPolicy,
+  routerParams: RouterParams
 };
 
 class ThreadView extends React.Component<Props> {
@@ -42,8 +43,7 @@ class ThreadView extends React.Component<Props> {
 
   scrollToTop = () => {
     window.scrollTo({
-      top: this.threadViewRef.current.getBoundingClientRect().y + window.pageYOffset - 160,
-      behavior: 'smooth'
+      top: this.threadViewRef.current.getBoundingClientRect().y + window.pageYOffset - 160
     });
   };
 
@@ -61,13 +61,19 @@ class ThreadView extends React.Component<Props> {
       identifier,
       phaseId,
       timeline,
-      messageViewOverride
+      messageViewOverride,
+      routerParams
     } = this.props;
     const isPhaseCompleted = getIsPhaseCompletedById(timeline, phaseId);
     return (
       <div>
         {(!isUserConnected || connectedUserCan(Permissions.ADD_POST)) && !isPhaseCompleted ? (
-          <TopPostFormContainer ideaId={ideaId} refetchIdea={refetchIdea} topPostsCount={posts.length} />
+          <TopPostFormContainer
+            ideaId={ideaId}
+            refetchIdea={refetchIdea}
+            topPostsCount={posts.length}
+            routerParams={routerParams}
+          />
         ) : null}
         <Grid fluid className="background-grey">
           <div ref={this.threadViewRef} id="thread-view" className="max-container background-grey">

@@ -313,6 +313,7 @@ class Idea extends React.Component<Props> {
       noRowsRenderer: noRowsRenderer,
       phaseId: phaseId,
       postsDisplayPolicy: this.props.threadFilter.postsDisplayPolicy,
+      routerParams: routerParams,
       refetchIdea: refetchIdea,
       timeline: timeline
     };

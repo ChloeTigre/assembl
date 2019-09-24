@@ -21,6 +21,7 @@ type TopPostFormContainerProps = {
   instructionLabelMsgId?: string,
   postSuccessMsgId?: string,
   refetchIdea: Function,
+  routerParams?: RouterParams,
   topPostsCount: number
 };
 
@@ -105,6 +106,7 @@ class DumbTopPostFormContainer extends React.Component<TopPostFormContainerProps
       messageColumns,
       postSuccessMsgId,
       refetchIdea,
+      routerParams,
       topPostsCount
     } = this.props;
     const columnsInfos = this.getColumnsInfos();
@@ -172,6 +174,7 @@ class DumbTopPostFormContainer extends React.Component<TopPostFormContainerProps
                             postSuccessMsgId={postSuccessMsgId}
                             draftable={draftable}
                             draftSuccessMsgId={draftSuccessMsgId}
+                            routerParams={routerParams}
                           />
                         </Col>
                       </Row>

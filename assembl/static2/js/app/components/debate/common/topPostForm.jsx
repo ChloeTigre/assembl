@@ -2,42 +2,44 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 import { compose, graphql } from 'react-apollo';
-import { FormGroup, Button } from 'react-bootstrap';
+import { Button, FormGroup } from 'react-bootstrap';
 import { I18n, Translate } from 'react-redux-i18n';
 import classNames from 'classnames';
 import { EditorState } from 'draft-js';
 
-import { PublicationStates, MESSAGE_VIEW } from '../../../constants';
+import { MESSAGE_VIEW, PublicationStates } from '../../../constants';
 import createPostMutation from '../../../graphql/mutations/createPost.graphql';
 import uploadDocumentMutation from '../../../graphql/mutations/uploadDocument.graphql';
 import { convertContentStateToHTML, editorStateIsEmpty, uploadNewAttachments } from '../../../utils/draftjs';
-import { getDomElementOffset } from '../../../utils/globalFunctions';
+import { getDomElementOffset, redirectToPost } from '../../../utils/globalFunctions';
 import { displayAlert, promptForLoginOr } from '../../../utils/utilityManager';
 import { TextInputWithRemainingChars } from '../../common/textInputWithRemainingChars';
 import RichTextEditor from '../../common/richTextEditor';
 import { connectedUserIsModerator } from '../../../utils/permissions';
 import { DebateContext } from '../../../app';
+import type { RouterParams } from '../../../types.flow';
 
 export const TEXT_INPUT_MAX_LENGTH = 140;
 export const NO_BODY_LENGTH = 0;
 
 export type Props = {
+  bodyPlaceholderMsgId?: string,
   contentLocale: string,
   createPost: Function,
-  ideaId: string,
-  refetchIdea: Function,
-  uploadDocument: Function,
-  ideaOnColumn: boolean,
-  messageClassifier: string,
-  scrollOffset: number,
-  onDisplayForm: Function,
-  fillBodyLabelMsgId?: string,
-  bodyPlaceholderMsgId?: string,
-  postSuccessMsgId?: string,
   draftable?: boolean,
   draftSuccessMsgId?: ?string,
+  fillBodyLabelMsgId?: string,
+  ideaId: string,
+  ideaOnColumn: boolean,
   isDebateModerated: boolean,
-  messageViewOverride: string
+  messageViewOverride: string,
+  messageClassifier: string,
+  onDisplayForm: Function,
+  postSuccessMsgId?: string,
+  refetchIdea: Function,
+  routerParams?: RouterParams,
+  scrollOffset: number,
+  uploadDocument: Function
 };
 
 type State = {
@@ -121,14 +123,15 @@ export class DumbTopPostForm extends React.Component<Props, State> {
     const {
       contentLocale,
       createPost,
-      ideaId,
-      refetchIdea,
-      uploadDocument,
-      messageClassifier,
-      postSuccessMsgId,
-      ideaOnColumn,
       draftSuccessMsgId,
-      messageViewOverride
+      ideaId,
+      ideaOnColumn,
+      messageClassifier,
+      messageViewOverride,
+      postSuccessMsgId,
+      refetchIdea,
+      routerParams,
+      uploadDocument
     } = this.props;
     const { body, subject } = this.state;
     this.setState(submittingState(true));
@@ -157,8 +160,17 @@ export class DumbTopPostForm extends React.Component<Props, State> {
           };
 
           createPost({ variables: variables })
-            .then(() => {
-              refetchIdea();
+            .then((res) => {
+              refetchIdea().then(() => {
+                if (routerParams) {
+                  redirectToPost({
+                    slug: routerParams.slug,
+                    phase: routerParams.phase,
+                    themeId: routerParams.themeId || '',
+                    postId: res.data.createPost.post.id
+                  });
+                }
+              });
               let successMessage;
               switch (publicationState) {
               case PublicationStates.DRAFT:
@@ -174,11 +186,7 @@ export class DumbTopPostForm extends React.Component<Props, State> {
                 displayAlert('success', I18n.t(successMessage), false, 10000);
               }
               this.resetForm();
-              this.setState(submittingState(false), () => {
-                if (ideaOnColumn) {
-                  window.scrollTo({ top: 1300, left: 0, behavior: 'smooth' });
-                }
-              });
+              this.setState(submittingState(false));
             })
             .catch((error) => {
               displayAlert('danger', error.message.replace('GraphQL error: ', ''));

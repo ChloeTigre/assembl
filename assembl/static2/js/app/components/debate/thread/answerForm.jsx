@@ -13,11 +13,9 @@ import { displayAlert, promptForLoginOr } from '../../../utils/utilityManager';
 import { convertContentStateToHTML, editorStateIsEmpty, uploadNewAttachments } from '../../../utils/draftjs';
 import RichTextEditor from '../../common/richTextEditor';
 import { getIsPhaseCompletedById } from '../../../utils/timeline';
-import { getPostPublicationState } from '../../../utils/globalFunctions';
+import { getPostPublicationState, redirectToPost } from '../../../utils/globalFunctions';
 import { connectedUserIsModerator } from '../../../utils/permissions';
 import { DebateContext } from '../../../app';
-import { browserHistory } from '../../../router';
-import { get } from '../../../utils/routeMap';
 
 type Props = {
   contentLocale: string,
@@ -111,14 +109,12 @@ export class DumbAnswerForm extends React.PureComponent<Props, State> {
             .then((res) => {
               const postId = res.data.createPost.post.id;
               const redirectToNewPost = () => {
-                browserHistory.push(
-                  get('post', {
-                    slug: routerParams.slug,
-                    phase: routerParams.phase,
-                    themeId: routerParams.themeId,
-                    postId: postId
-                  })
-                );
+                redirectToPost({
+                  slug: routerParams.slug,
+                  phase: routerParams.phase,
+                  themeId: routerParams.themeId,
+                  postId: postId
+                });
               };
               this.setState({ submitting: false, body: EditorState.createEmpty() }, () => {
                 hideAnswerForm();

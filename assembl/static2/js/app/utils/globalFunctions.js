@@ -1,20 +1,22 @@
 // @flow
+import type Moment from 'moment';
 import moment from 'moment';
 import Cookies from 'js-cookie';
-import type Moment from 'moment';
 import { type Map } from 'immutable';
 import type { SuggestedTags, Tags } from '../pages/semanticAnalysis/dataType';
 import type { TagProps } from '../components/common/tags/tags';
 
 import {
-  ICONS_PATH,
   BM_PICTURE_BASE_URL,
+  ICONS_PATH,
+  KEYWORD_SCORE_THRESHOLD,
+  LG_SCREEN_WIDTH,
   PICTURE_EXTENSION,
   PublicationStates,
-  SM_SCREEN_WIDTH,
-  LG_SCREEN_WIDTH,
-  KEYWORD_SCORE_THRESHOLD
+  SM_SCREEN_WIDTH
 } from '../constants';
+import { browserHistory } from '../router';
+import { get } from './routeMap';
 
 const getInputValue = (id: string) => {
   const elem = document.getElementById(id);
@@ -379,3 +381,19 @@ const isEdge = () => !isIE() && !!window.StyleMedia;
 
 // Function that checks whether the browser is a Microsoft browser
 export const isMicrosoftBrowser = () => isIE() || isEdge();
+
+type RedirectToPostParams = { slug: string, phase: string, themeId: string, postId: string };
+
+// Redirect to a post
+export const redirectToPost = ({ slug, phase, themeId, postId }: RedirectToPostParams) => {
+  const path = get('post', {
+    slug: slug,
+    phase: phase,
+    themeId: themeId,
+    postId: postId
+  });
+  if (process.env.NODE_ENV === 'development') {
+    console.info('redirect to', path); // eslint-disable-line no-console
+  }
+  browserHistory.push(path);
+};

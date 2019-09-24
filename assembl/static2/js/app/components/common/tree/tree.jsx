@@ -67,8 +67,13 @@ class Tree extends React.Component<Props> {
 
   componentDidUpdate(prevProps: Props) {
     const { initialRowIndex } = this.props;
-    if (prevProps.initialRowIndex !== initialRowIndex) {
-      this.triggerScrollToRow(initialRowIndex);
+
+    // scroll to row if necessary
+    // if the refetch is the result of a create or delete. scroll is not accurate
+    if ((prevProps.data && prevProps.data.length) === this.props.data.length) {
+      if (prevProps.initialRowIndex !== initialRowIndex) {
+        this.triggerScrollToRow(initialRowIndex);
+      }
     }
   }
 
