@@ -73,6 +73,17 @@ export class DumbPostsFilterMenu extends React.Component<Props, State> {
     window.removeEventListener('scroll', this.setButtonPosition);
   };
 
+  componentDidUpdate() {
+    const menuElt = document.querySelector('.posts-filter-button .dropdown-menu');
+    if (menuElt && this.state.open) {
+      const eltBottomPos = menuElt.getBoundingClientRect().top + menuElt.offsetHeight;
+      const pageBottomPos = window.innerHeight;
+      if (eltBottomPos > pageBottomPos) {
+        window.scrollBy({ top: eltBottomPos - pageBottomPos + 20, behavior: 'smooth' });
+      }
+    }
+  }
+
   onToggle = () => {
     const { open } = this.state;
     this.setState({ open: !open });
