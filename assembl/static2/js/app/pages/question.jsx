@@ -38,8 +38,22 @@ export type Props = {
 };
 
 export class DumbQuestion extends React.Component<Props> {
+  // failed to type it React$Ref<HTMLHeadingElement>
+  subTitleRef: any;
+
   static defaultProps = {
     isModerating: false
+  };
+
+  componentWillMount() {
+    this.subTitleRef = React.createRef();
+  }
+
+  scrollToTop = () => {
+    window.scrollTo({
+      top: this.subTitleRef.current.getBoundingClientRect().y + window.pageYOffset - 160,
+      behavior: 'smooth'
+    });
   };
 
   render() {
@@ -67,7 +81,7 @@ export class DumbQuestion extends React.Component<Props> {
           <Header title={thematicTitle} imgUrl={imgUrl} phaseId={phaseId}>
             <HeaderStatistics statElements={statElements} />
           </Header>
-          <QuestionPostsFilterMenu stickyOffset={600} stickyTopPosition={100} />
+          <QuestionPostsFilterMenu stickyOffset={600} stickyTopPosition={100} onFiltersUpdate={this.scrollToTop} />
           <div className="background-light proposals">
             <Grid fluid className="background-light">
               <div className="max-container">
@@ -87,7 +101,7 @@ export class DumbQuestion extends React.Component<Props> {
                   </h1>
                 </div>
                 <div className="center">
-                  <h3 className="collapsed-title">
+                  <h3 ref={this.subTitleRef} className="collapsed-title">
                     <span>{`${params.questionIndex}/ ${title}`}</span>
                   </h3>
                   <Posts

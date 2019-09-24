@@ -7,6 +7,7 @@ import PostsFilterMenu from '../menu';
 import { setThreadPostsFilterPolicies } from '../../../../../actions/threadFilterActions';
 
 type Props = {
+  onFiltersUpdate: () => void,
   postsDisplayPolicy: PostsDisplayPolicy,
   postsFiltersStatus: PostsFiltersStatus,
   postsOrderPolicy: PostsOrderPolicy,

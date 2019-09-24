@@ -7,6 +7,7 @@ import PostsFilterMenu from '../menu';
 import { setQuestionPostsFilterPolicies } from '../../../../../actions/questionFilterActions';
 
 type Props = {
+  onFiltersUpdate: () => void,
   postsDisplayPolicy: PostsDisplayPolicy,
   postsFiltersStatus: PostsFiltersStatus,
   postsOrderPolicy: PostsOrderPolicy,

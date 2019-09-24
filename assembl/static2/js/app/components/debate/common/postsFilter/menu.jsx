@@ -11,17 +11,14 @@ import PostsFilterButtons from './buttons';
 import PostsFilterLabelMenuItem from './label';
 import { getConnectedUserId } from '../../../../utils/globalFunctions';
 import { withScreenHeight } from '../../../common/screenDimensions';
-import {
-  defaultDisplayPolicy,
-  defaultOrderPolicy,
-  defaultPostsFiltersStatus
-} from './policies';
+import { defaultDisplayPolicy, defaultOrderPolicy, defaultPostsFiltersStatus } from './policies';
 import { ICO_FILTER } from '../../../../constants';
 
 type Props = {
   defaultDisplayPolicy: PostsDisplayPolicy,
   defaultOrderPolicy: PostsOrderPolicy,
   defaultPostsFiltersStatus: PostsFiltersStatus,
+  onFiltersUpdate: () => void,
   postsDisplayPolicies: PostsDisplayPolicy[],
   postsFiltersPolicies: PostsFilterPolicy[],
   postsOrderPolicies: PostsOrderPolicy[],
@@ -53,7 +50,8 @@ export class DumbPostsFilterMenu extends React.Component<Props, State> {
   static defaultProps = {
     defaultOrderPolicy: defaultOrderPolicy,
     defaultDisplayPolicy: defaultDisplayPolicy,
-    defaultPostsFiltersStatus: defaultPostsFiltersStatus
+    defaultPostsFiltersStatus: defaultPostsFiltersStatus,
+    onFiltersUpdate: () => {}
   };
 
   componentWillMount(): void {
@@ -123,6 +121,7 @@ export class DumbPostsFilterMenu extends React.Component<Props, State> {
       this.props.defaultPostsFiltersStatus
     );
     this.setState({ open: false });
+    this.props.onFiltersUpdate();
   };
 
   savePolicies = () => {
@@ -132,6 +131,7 @@ export class DumbPostsFilterMenu extends React.Component<Props, State> {
       this.state.selectedPostsFiltersStatus
     );
     this.setState({ open: false });
+    this.props.onFiltersUpdate();
   };
 
   render() {

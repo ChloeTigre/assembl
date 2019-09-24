@@ -29,8 +29,22 @@ type Props = {
 };
 
 class ThreadView extends React.Component<Props> {
+  // failed to type it React$Ref<HTMLDivElement>
+  threadViewRef: any;
+
   static defaultProps = {
     postsDisplayPolicy: defaultDisplayPolicy
+  };
+
+  componentWillMount(): void {
+    this.threadViewRef = React.createRef();
+  }
+
+  scrollToTop = () => {
+    window.scrollTo({
+      top: this.threadViewRef.current.getBoundingClientRect().y + window.pageYOffset - 160,
+      behavior: 'smooth'
+    });
   };
 
   render() {
@@ -56,8 +70,8 @@ class ThreadView extends React.Component<Props> {
           <TopPostFormContainer ideaId={ideaId} refetchIdea={refetchIdea} topPostsCount={posts.length} />
         ) : null}
         <Grid fluid className="background-grey">
-          <div id="thread-view" className="max-container background-grey">
-            <ThreadPostsFilterMenu stickyOffset={60} stickyTopPosition={200} />
+          <div ref={this.threadViewRef} id="thread-view" className="max-container background-grey">
+            <ThreadPostsFilterMenu stickyOffset={60} stickyTopPosition={200} onFiltersUpdate={this.scrollToTop} />
             <div className="content-section">
               <Tree
                 sharedProps={{ postsDisplayPolicy: postsDisplayPolicy }}

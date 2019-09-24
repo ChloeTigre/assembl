@@ -35,6 +35,7 @@ exports[`Question page should display a question 1`] = `
       />
     </Connect(Header)>
     <Connect(DumbThreadPostsFilterMenu)
+      onFiltersUpdate={[Function]}
       stickyOffset={600}
       stickyTopPosition={100}
     />
@@ -164,6 +165,7 @@ exports[`Question page should display a question in moderation context 1`] = `
       />
     </Connect(Header)>
     <Connect(DumbThreadPostsFilterMenu)
+      onFiltersUpdate={[Function]}
       stickyOffset={600}
       stickyTopPosition={100}
     />
