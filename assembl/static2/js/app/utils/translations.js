@@ -438,9 +438,9 @@ const Translations = {
           "Votre contribution a bien été prise en compte. Pour assurer la qualité des échanges, elle sera visible par l'ensemble des participants dès qu'elle aura été revue par l'équipe en charge de l'animation.",
         endPhase: "La phase \"%{closedPhaseName}\" est terminée.",
         postsOrder: {
-          chronologicalTop: "Propositions chronologiques",
+          chronologicalTop: "Propositions les plus anciennes en premier",
           popularityFlat: "Propositions les plus populaires en premier",
-          reverseChronologicalLast: "Propositions récentes en premier"
+          reverseChronologicalLast: "Propositions les plus récentes en premier"
         }
       },
       question: {
@@ -470,10 +470,10 @@ const Translations = {
         },
         postsOrder: {
           cleanFilter: "Effacer les filtres",
-          chronologicalTop: "Fils de discussion chronologiques",
+          chronologicalTop: "Fils de discussion les plus anciens en premier",
           popularityFlat: "Messages les plus populaires en premier",
           reverseChronologicalFlat: "Messages récents en premier",
-          reverseChronologicalLast: "Fils de discussion récemment actifs",
+          reverseChronologicalLast: "Fils de discussion les plus récents en premier",
           reverseChronologicalTop: "Fils de discussion récemment démarrés"
         },
         fillBody: "Veuillez écrire un message",
