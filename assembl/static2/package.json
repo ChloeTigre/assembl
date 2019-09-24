@@ -7,7 +7,7 @@
     "test": "tests"
   },
   "scripts": {
-    "test": "jest --maxWorkers=2",
+    "test": "MAXWORKERS=${MAXWORKERS:-2} jest --maxWorkers=$MAXWORKERS",
     "test:watch": "npm test -- --watch",
     "build:raw": "webpack --progress --colors",
     "build:cleanup": "find ./build | egrep \"(mainStyle|glyphicons).*\" | xargs rm",
