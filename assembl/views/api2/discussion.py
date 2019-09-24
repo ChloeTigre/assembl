@@ -825,6 +825,13 @@ def users_csv_export(request):
             users[creator_id][POSTS] += 1
             users[creator_id][POSTS_REPLIES] += replies_num
 
+        if post.parent_id is None:
+            users[creator_id][TOP_POSTS] += 1
+            users[creator_id][TOP_POST_REPLIES] += len(descendants)
+        else:
+            users[creator_id][POSTS] += 1
+            users[creator_id][POSTS_REPLIES] += len(descendants)
+
         users[creator_id][TOTAL_POSTS] += 1
         users[creator_id][AGREE_RECEIVED] += sentiments_received_by_post[post.id][LIKE_SENTIMENT]
         users[creator_id][DISAGREE_RECEIVED] += sentiments_received_by_post[post.id][DISLIKE_SENTIMENT]
