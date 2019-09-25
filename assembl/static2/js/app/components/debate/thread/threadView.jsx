@@ -42,8 +42,10 @@ class ThreadView extends React.Component<Props> {
   }
 
   scrollToTop = () => {
+    // scrollMargin is only about esthetic
+    const scrollMargin = 160;
     window.scrollTo({
-      top: this.threadViewRef.current.getBoundingClientRect().y + window.pageYOffset - 160
+      top: this.threadViewRef.current.getBoundingClientRect().y + window.pageYOffset - scrollMargin
     });
   };
 

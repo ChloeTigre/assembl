@@ -50,9 +50,10 @@ export class DumbQuestion extends React.Component<Props> {
   }
 
   scrollToTop = () => {
+    // scrollMargin is only about esthetic
+    const scrollMargin = 160;
     window.scrollTo({
-      top: this.subTitleRef.current.getBoundingClientRect().y + window.pageYOffset - 160,
-      behavior: 'smooth'
+      top: this.subTitleRef.current.getBoundingClientRect().y + window.pageYOffset - scrollMargin
     });
   };
 
